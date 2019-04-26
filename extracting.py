@@ -5,12 +5,16 @@ from datatype import DataNode, TsvObject, CsvObject, JsonObject, XmlObject
 from parsing import parse, split_nodes, parse_nodes
 
 
-def get_path(file: str) -> Path:
+def get_path(file: str, create_if_not_exist=False) -> Path:
     path = None
     try:
         path = Path(file).resolve(strict=True)
     except FileNotFoundError as e:
         print("Failed to read: %s" % e)
+        if create_if_not_exist:
+            f = open(file, 'w')
+            f.close()
+            path = Path(file).resolve(strict=True)
     return path
 
 

@@ -23,6 +23,16 @@ if __name__ == '__main__':
         nargs='+',
         help="Specify files that you want to merge")
     arg_parser.add_argument(
+        "-a", "--advanced",
+        dest="advanced_option",
+        action="store_true",
+        help="Parse files on advanced conditions")
+    arg_parser.add_argument(
+        "-u", "--use-union",
+        dest="union_option",
+        action="store_true",
+        help="Path to the file in which the processed data will be saved")
+    arg_parser.add_argument(
         "-o", "--out",
         metavar="path",
         dest="output_file",
@@ -34,10 +44,14 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
 
     # Prints to output.tsv if a output path isn't specified.
-    output = get_format(get_path(args.output_file if args.output_file else "output.tsv"))
+    output = get_format(get_path(args.output_file if args.output_file else "output.tsv", create_if_not_exist=True))
 
     files = [get_path(file) for file in args.files]
     data = extract_data(files)
-    # new_data = packing_data(data, lambda l: l[0])  # basic_result
-    new_data = packing_data(data, lambda l: ''.join(l[i] for i in range(3)), sum_equal_value=0)  # advanced_result
+
+    use_union = args.union_option if args.union_option else False
+    if args.advanced_option:
+        new_data = packing_data(data, lambda l: ''.join(l[i] for i in range(3)), use_union=use_union,  sum_equal_value=0)  # advanced_result
+    else:
+        new_data = packing_data(data, lambda l: l[0], use_union=use_union)  # basic_result
     dump(output, new_data)

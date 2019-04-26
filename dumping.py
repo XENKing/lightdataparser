@@ -38,7 +38,7 @@ def packing_data(output_data: List[List[DataNode]], sort_func, use_union=False, 
         out_rows = []
         for idx, node in enumerate(file_data):
             name = node.name
-            if kwargs["sum_equal_value"] != idx:
+            if "sum_equal_value" in kwargs and kwargs["sum_equal_value"] != idx:
                 name = node.name+"S"
             name_list = [name + str(el) for el in sorted(header_sets[idx])]
             set_operator(name_sets, idx, name_list)
