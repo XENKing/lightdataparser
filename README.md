@@ -1,3 +1,13 @@
+## Usage
+1. Clone repo
+2. Open console in repo folder
+3. Type `py main.py file <files>`
+4. If output file not specified, result will be saved in `output.tsv`
+
+For extra help type `py main.py -h`
+
+<details> 
+ <summary>task explanation</summary>
 Задание для потенциальных кандидатов на позицию Junior-девелоперов.
 Представляет из себя проcтой ETL с разными форматами файлов.
 
@@ -141,3 +151,4 @@
 * входные файлы могут быть больших размеров
 * возможность обработки строк с некорректными значениями без прекращения выполнения программы с информированием пользователя об ошибках в конце её выполнения
 * подумать об организации тестирования программы
+</details> 
