@@ -1,3 +1,7 @@
+"""
+Что-то вроде попытки указать параметры для парсинга
+"""
+
 xml_node_group = 'objects'
 xml_node_item = 'object'
 xml_node_header = 'name'

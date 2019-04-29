@@ -3,7 +3,7 @@
 """
     Simple application (Extract, Transform, Load) for data organizing
 """
-import logging
+
 from argparse import ArgumentParser
 
 from dumping import packing_data, dump
@@ -43,15 +43,23 @@ if __name__ == '__main__':
         version=f"%(prog)s {__version__}")
     args = arg_parser.parse_args()
 
-    # Prints to output.tsv if a output path isn't specified.
+    # Если выходого пути не указано, используем 'output.tsv'
     output = get_format(get_path(args.output_file if args.output_file else "output.tsv", create_if_not_exist=True))
-
+    # Разрешаем и преобразовываем все входные пути к файлам
     files = [get_path(file) for file in args.files]
     data = extract_data(files)
 
+    # Нужно ли использовать объединения данных заместо пересечения данных по умолчанию
     use_union = args.union_option if args.union_option else False
+
+    # Проверяем наличие ключа для выполнения продвинутого задания
     if args.advanced_option:
-        new_data = packing_data(data, lambda l: ''.join(l[i] for i in range(3)), use_union=use_union,  sum_equal_value=0)  # advanced_result
+        # Запаковываем данные в простой список со строками
+        # Используем лямбду для функции сортировки
+        new_data = packing_data(data, lambda l: ''.join(l[i] for i in range(3)), use_union=use_union,
+                                sum_equal_value=0)  # advanced_result
     else:
         new_data = packing_data(data, lambda l: l[0], use_union=use_union)  # basic_result
+
+    # Пишем выходные строки в файл нужным способом в зависимости от расширения файла
     dump(output, new_data)

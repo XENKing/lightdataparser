@@ -1,3 +1,7 @@
+"""
+Функции извлечения данных
+"""
+
 from pathlib import Path
 from typing import List
 
@@ -5,7 +9,13 @@ from datatype import DataNode, TsvObject, CsvObject, JsonObject, XmlObject
 from parsing import parse, split_nodes, parse_nodes
 
 
-def get_path(file: str, create_if_not_exist=False) -> Path:
+def get_path(file: str, create_if_not_exist: bool = False) -> Path:
+    """
+Проверяет существование указанного пути к файлу
+    :param file: строковое местоположение файла/пути
+    :param create_if_not_exist: Создать файл по указанному пути если его не существует
+    :return: объект типа Path
+    """
     path = None
     try:
         path = Path(file).resolve(strict=True)
@@ -18,7 +28,12 @@ def get_path(file: str, create_if_not_exist=False) -> Path:
     return path
 
 
-def get_format(file: Path):
+def get_format(file: Path) -> object:
+    """
+Распознает формат и возвращает объект, ассоциированный с расширением файла
+    :param file: Существующий путь к файлу
+    :return: Ассоциированный объект класса
+    """
     if file.suffix == ".tsv":
         return TsvObject(file)
     elif file.suffix == ".csv":
@@ -30,6 +45,11 @@ def get_format(file: Path):
 
 
 def extract_data(files: list) -> List[List[DataNode]]:
+    """
+Собирает полученные данные в список узлов
+    :param files: Список путей к файлам
+    :return: Список содержащий список с узлами из каждого файла
+    """
     input_data = []
     for file in files:
         file_obj = get_format(file)
