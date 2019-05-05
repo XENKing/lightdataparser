@@ -5,15 +5,23 @@
 from pathlib import Path
 from typing import List
 
-from datatype import DataNode, TsvObject, CsvObject, JsonObject, XmlObject
-from parsing import parse, split_nodes, parse_nodes
+from lightdataparser.datatype import DataNode, TsvObject, CsvObject, JsonObject, XmlObject
+from lightdataparser.parsing import parse, split_nodes, parse_nodes
 
 
-def get_path(file: str, create_if_not_exist: bool = False) -> Path:
+def get_file_paths(files, recursive: bool = False):
+    paths = sum([get_path(file, recursive) for file in files], [])
+    print(paths)
+    return paths
+
+
+def get_path(file: str, create_if_not_exist: bool = False, recusive: bool = False) -> list:
     """
-Проверяет существование указанного пути к файлу
-    :param file: строковое местоположение файла/пути
-    :param create_if_not_exist: Создать файл по указанному пути если его не существует
+Получает пути к файлу или папке
+    :param file: Cтроковое представление файла или директории
+    :param create_if_not_exist: Создать файл с указанным именем, если файла не существует
+    :param recusive: Рекурсинвый проход через все вложенные директории
+                    **Только для директории**
     :return: объект типа Path
     """
     path = None
@@ -22,9 +30,12 @@ def get_path(file: str, create_if_not_exist: bool = False) -> Path:
     except FileNotFoundError as e:
         print("Failed to read: %s" % e)
         if create_if_not_exist:
-            f = open(file, 'w')
-            f.close()
-            path = Path(file).resolve(strict=True)
+            Path(Path.cwd().joinpath(file)).touch()
+    else:
+        if path.is_dir():
+            path = [f for f in path.iterdir()] if not recusive else [i for i in path.rglob("*")]
+        else:
+            path = [path]
     return path
 
 

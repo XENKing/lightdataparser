@@ -1,13 +1,43 @@
-## Usage
-1. Clone repo
-2. Open console in repo folder
-3. Type `py main.py file <files>`
-4. If output file not specified, result will be saved in `output.tsv`
+### Installation
+        
+    $ git clone https://github.com/XENKing/lightdataparser
+    
+    $ cd lightdataparser
+    
+    $ python setup.py sdist (or python3 setup.py sdist)
+    
+    $ cd dist
+    
+    $ (sudo) pip install pkg_available_in_directory (or pip3 install pkg_available_in_directory) 
+    
+      # where 'pkg_available_in_directory' is the exact name of the package
+      
+      # created in the 'dist' folder
+      
+    # OR
+    
+    $ (sudo) pip install git+https://github.com/XENKing/lightdataparser.git
+        
+        
+**Note:** use 'sudo' depending on whether you want to install package system-wide or not
+        
+**Note:** use pip or pip3 depending on what is available on your system
 
-For extra help type `py main.py -h`
+### Uninstall
+        
+    $ (sudo) pip uninstall vinanti (OR pip3 uninstall vinanti)
+
+### Usage
+    $ lightdataparser [args] <files/directory/path>
+ 
+**For extra help use:** 
+
+    $ lightdataparser -h
 
 <details> 
- <summary>task explanation</summary>
+ <summary>Task summary</summary>
+
+### Description
 Задание для потенциальных кандидатов на позицию Junior-девелоперов.
 Представляет из себя проcтой ETL с разными форматами файлов.
 
@@ -32,7 +62,7 @@ For extra help type `py main.py -h`
 * результаты **Advanced**:
   * advanced_results.tsv
 
-## Задача
+### Задача
 Есть четыре файла: два `.csv`, один `.json` и один .`xml` файл.   
 
 
@@ -99,7 +129,7 @@ For extra help type `py main.py -h`
 
 Где *z* > *n*, *p* >= *n*, *s* строка и *i* целое число.
 
-### Basic
+#### Basic
 
 Файлы нужно будет трансформировать в один `.tsv` файл со следующей структурой:
 
@@ -112,7 +142,7 @@ For extra help type `py main.py -h`
 Он должен быть отсортирован по колонке **D1** и содержать даннные из всех четырёх файлов.
 
 
-### Advanced
+#### Advanced
 
 Файлы нужно будет трансформировать в один `.tsv` файл со следующей структурой:
 
@@ -125,7 +155,7 @@ For extra help type `py main.py -h`
 по уникальнным значениям комбинаций строк из **D1**...**Dn**.
 
 ##### Пример
-**Содржимое .tsv файла с данными из 4 файлов:**
+**Содeржимое .tsv файла с данными из 4 файлов:**
 
 |D1  |D2  |M1  |M2  |M3  |
 |:--:|:--:|:--:|:--:|:--:|
@@ -144,7 +174,7 @@ For extra help type `py main.py -h`
 |c   |c   |7   |7   |7   |
 
 
-### Бонусы
+#### Бонусы
 
 Нужно попытаться учесть несколько фактов:
 * в дальнейшем использовании программы возможно появление требования для работы с другими типами файлов, например `.yaml`.

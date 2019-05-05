@@ -8,8 +8,8 @@ from typing import Tuple, List
 from xml.etree import ElementTree
 from functools import singledispatch
 
-import config
-from datatype import DataNode, TsvObject, CsvObject, JsonObject, XmlObject
+from lightdataparser import config
+from lightdataparser.datatype import DataNode, CsvObject, JsonObject, XmlObject
 
 
 @singledispatch

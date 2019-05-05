@@ -5,10 +5,9 @@
 import csv
 import re
 from functools import singledispatch
-from pathlib import Path
 from typing import List
 
-from datatype import CsvObject, DataNode
+from lightdataparser.datatype import CsvObject, DataNode
 
 
 def sort_sets(sets):
