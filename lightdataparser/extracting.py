@@ -1,7 +1,7 @@
 """
 Функции извлечения данных
 """
-
+import re
 from pathlib import Path
 from typing import List
 
@@ -20,7 +20,7 @@ def get_paths(files: list, recusive: bool = False) -> list:
     paths = []
     for file in files:
         try:
-            path = Path(file).resolve(strict=True)
+            path = Path(file).expanduser().resolve(strict=True)
         except FileNotFoundError as e:
             print("Failed to read: %s" % e)
         except PermissionError as e:
@@ -37,19 +37,26 @@ def get_paths(files: list, recusive: bool = False) -> list:
 
 
 def get_out_path(file: str, default_name: str = "output.tsv") -> Path:
+    path = Path.cwd().joinpath(default_name)
     try:
         path = Path(file).resolve(strict=True)
     except FileNotFoundError:
-        for name in reversed(file.split('/')):
-            if name is not '':
-                Path(Path.cwd().joinpath(name)).touch()
-                break
-        Path(Path.cwd().joinpath(file)).touch()
-        path = Path(file).resolve(strict=True)
+        match = re.match(r"^(.*/+)?([^/]*)$", file)
+        if match:
+            directory = Path.cwd()
+            if match.group(1):
+                try:
+                    directory = Path(match.group(1)).expanduser().resolve(strict=True)
+                except FileNotFoundError:
+                    pass
+            path = directory.joinpath(match.group(2)) if match.group(2) else directory.joinpath(default_name)
+    except Exception:
+        pass
     else:
         if path.is_dir():
             path.joinpath(default_name)
-            Path(path).touch()
+
+    Path(path).touch()
     return path
 
 
