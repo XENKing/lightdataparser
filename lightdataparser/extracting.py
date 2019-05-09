@@ -9,33 +9,47 @@ from lightdataparser.datatype import DataNode, TsvObject, CsvObject, JsonObject,
 from lightdataparser.parsing import parse, split_nodes, parse_nodes
 
 
-def get_file_paths(files, recursive: bool = False):
-    paths = sum([get_path(file, recursive) for file in files], [])
-    print(paths)
+def get_paths(files: list, recusive: bool = False) -> list:
+    """
+Получает пути к файлу или папке
+    :param files: Список строковых путей файлов
+    :param recusive: Рекурсинвый проход через все вложенные директории
+                    **Только для директории**
+    :return: Список объектов типа Path
+    """
+    paths = []
+    for file in files:
+        try:
+            path = Path(file).resolve(strict=True)
+        except FileNotFoundError as e:
+            print("Failed to read: %s" % e)
+        except PermissionError as e:
+            print("PermissionError: %s" % e)
+        except Exception as e:
+            print(e)
+        else:
+            if path.is_dir():
+                path = [f for f in path.iterdir()] if not recusive else [i for i in path.rglob("*")]
+            paths.append(path)
+
+    paths = sum(paths, [])
     return paths
 
 
-def get_path(file: str, create_if_not_exist: bool = False, recusive: bool = False) -> list:
-    """
-Получает пути к файлу или папке
-    :param file: Cтроковое представление файла или директории
-    :param create_if_not_exist: Создать файл с указанным именем, если файла не существует
-    :param recusive: Рекурсинвый проход через все вложенные директории
-                    **Только для директории**
-    :return: объект типа Path
-    """
-    path = None
+def get_out_path(file: str, default_name: str = "output.tsv") -> Path:
     try:
         path = Path(file).resolve(strict=True)
-    except FileNotFoundError as e:
-        print("Failed to read: %s" % e)
-        if create_if_not_exist:
-            Path(Path.cwd().joinpath(file)).touch()
+    except FileNotFoundError:
+        for name in reversed(file.split('/')):
+            if name is not '':
+                Path(Path.cwd().joinpath(name)).touch()
+                break
+        Path(Path.cwd().joinpath(file)).touch()
+        path = Path(file).resolve(strict=True)
     else:
         if path.is_dir():
-            path = [f for f in path.iterdir()] if not recusive else [i for i in path.rglob("*")]
-        else:
-            path = [path]
+            path.joinpath(default_name)
+            Path(path).touch()
     return path
 
 

@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 
 from lightdataparser.dumping import packing_data, dump
-from lightdataparser.extracting import get_file_paths, extract_data, get_format, get_path
+from lightdataparser.extracting import *
 
 __version__ = "0.5"
 
@@ -42,11 +42,11 @@ def main(args=None):
 
     # Если выходого пути не указано, используем 'output.tsv'
     args = arg_parser.parse_args()
-    output_file = get_path(args.output_file if args.output_file else "output.tsv", create_if_not_exist=True)
-    output = get_format(next(iter(output_file)))
+    output_file = get_out_path(args.output_file)
+    output = get_format(output_file)
 
     # Разрешаем и преобразовываем все входные пути к файлам
-    files = get_file_paths(args.files, args.recursive_option)
+    files = get_paths(args.files, args.recursive_option)
     data = extract_data(files)
 
     # Нужно ли использовать объединения данных заместо пересечения данных по умолчанию
