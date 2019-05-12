@@ -1,16 +1,17 @@
-import os
-import sys
 import unittest
-from functools import partial
 
-if __name__ == '__main__':
-    BASEDIR, BASEFILE = os.path.split(os.path.abspath(__file__))
-    parent_basedir, __ = os.path.split(BASEDIR)
-    print(parent_basedir)
-    sys.path.insert(0, parent_basedir)
-    k_dir = os.path.join(parent_basedir, 'vinanti')
-    sys.path.insert(0, k_dir)
-    print(k_dir)
-    from lightdataparser import main
+test_modules = [
+    'lightdataparser.tests.test_cases',
+    'lightdataparser.tests.test_types',
+    'lightdataparser.tests.test_extract',
+    'lightdataparser.tests.test_parse',
+    'lightdataparser.tests.test_dump',
+]
 
-    unittest.main()
+suite = unittest.TestSuite()
+
+for t in test_modules:
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromName(t))
+
+if __name__ == "__main__":
+    unittest.TextTestRunner().run(suite)

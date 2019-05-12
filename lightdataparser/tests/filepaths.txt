@@ -1,0 +1,6 @@
+data.csv
+../list.xml
+null
+/root/smth/
+~/home/data2.tsv
+~/data3.json

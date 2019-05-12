@@ -25,7 +25,7 @@
 
 ### Uninstall
         
-    $ (sudo) pip uninstall vinanti (OR pip3 uninstall vinanti)
+    $ (sudo) pip uninstall lightdataparser (OR pip3 uninstall lightdataparser)
 
 ### Usage
     $ lightdataparser [args] <files/directory/path>
@@ -38,7 +38,6 @@
  <summary>Task summary</summary>
 
 ### Description
-Задание для потенциальных кандидатов на позицию Junior-девелоперов.
 Представляет из себя проcтой ETL с разными форматами файлов.
 
 Задание состоит из двух блоков:
