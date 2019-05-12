@@ -107,7 +107,7 @@ class DataNode(MutableSequence):
         """
 Собираем все списки в строку
         """
-        return str(list(map(lambda el: list(map(str, el)), self._list)))
+        return str([[str(el) for el in r] for i, r in enumerate(self._list) if i in self._header])
 
     @method_dispatch
     def insert(self, index, value=None):
@@ -117,7 +117,10 @@ class DataNode(MutableSequence):
         :param value: Что добавлять
         """
         if index < max(self._header):
-            self._list[index] = list()
+            if value:
+                self._list[index] = value
+            else:
+                self._list[index] = list()
             return
         # Cоздаем новый массив ссылок нужной длины
         tmp_list = list(range(index + 1))

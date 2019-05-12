@@ -35,8 +35,8 @@ def _parse_csv(file) -> Tuple[dict, list]:
 def _parse_json(file) -> Tuple[dict, list]:
     with open(file.path, 'r') as f:
         try:
-            data = json.load(f)
-        except ValueError as e:
+            data = json.load(f, parse_int=str)
+        except json.JSONDecodeError as e:
             print("Can't load json data in %s: %s" % (file.path, e))
             return None
         # Разделяем данные и заголовок

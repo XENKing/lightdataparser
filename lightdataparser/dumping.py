@@ -10,7 +10,7 @@ from typing import List
 from lightdataparser.datatype import CsvObject, DataNode
 
 
-def sort_sets(sets):
+def sort_sets(sets: List[set]) -> list:
     """
 Сортировка с парсиногом чисел из строки
     :param sets: Входное множество
@@ -26,9 +26,9 @@ def sort_sets(sets):
 def packing_data(output_data: List[List[DataNode]], sort_func, use_union=False, **kwargs) -> list:
     """
 Упаковка списка списков узлов каждого файла в целое с указанными условиями (лямбда) сортировки
-    :param output_data:
-    :param sort_func:
-    :param use_union:
+    :param output_data: Выходные данные по каждому файлу в виде списка узлов
+    :param sort_func: Функция для выбора сортируемых данных
+    :param use_union: Использовать объединение данных (По умолчанию - пересечение)
     :param kwargs: Пока единственный дополнительный параметр :key sum_equal_value, коотрый говорит о том,
      что нужно суммировать все значения с повторяющимся индексом, кроме указанного в value столбца
     :return: Готовый для экспорта список с первой строкой - заголовоком, и остальными - значениями
@@ -62,6 +62,7 @@ def packing_data(output_data: List[List[DataNode]], sort_func, use_union=False, 
                 node_data.sort()
                 set_operator(sets, it, data_func(node_data))
         return sets
+
     # Сортированный список с заголовками
     header_sets = decompose_header(output_data, lambda n: n.getheader())
     # Список с выходными именами
@@ -96,18 +97,17 @@ def packing_data(output_data: List[List[DataNode]], sort_func, use_union=False, 
         not_include = (0, 0)
         for i, el in enumerate(header_sets):
             if kwargs["sum_equal_value"] == i:
-
                 not_include = (offset, offset + len(el))
                 break
             offset += len(el)
 
-        # Сортируем не включенные данные указанной функцией
+        # Сортируем исключаемые данные функцией сортировки
         sort_val = [sort_func(el) for el in data]
         # Формируем список кортежей с повтороными индексами
         duplicates = [(sort_val.index(el), i) for i, el in enumerate(sort_val) if i != sort_val.index(el)]
         # сортируем в обратном порядке по второму элементу кортежа (для корректного удаления)
         duplicates.sort(reverse=True, key=lambda l: l[1])
-        # Складываем и удаляем столбцы с повторными индексами
+        # Складываем и удаляем столбцы с повторяющимися значениями в индексах
         for a, b in duplicates:
             l, r = not_include
             for idx, (i, j) in enumerate(zip(data[a], data[b])):

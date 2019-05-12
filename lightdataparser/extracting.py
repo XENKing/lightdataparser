@@ -25,8 +25,6 @@ def get_paths(files: list, recusive: bool = False) -> list:
             print("Failed to read: %s" % e)
         except PermissionError as e:
             print("PermissionError: %s" % e)
-        except Exception as e:
-            print(e)
         else:
             if path.is_dir():
                 path = [f for f in path.iterdir()] if not recusive else [i for i in path.rglob("*")]

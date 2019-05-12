@@ -1,5 +1,4 @@
 from argparse import ArgumentParser
-
 from lightdataparser.dumping import packing_data, dump
 from lightdataparser.extracting import *
 
