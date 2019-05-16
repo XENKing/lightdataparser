@@ -13,5 +13,14 @@ suite = unittest.TestSuite()
 for t in test_modules:
     suite.addTest(unittest.defaultTestLoader.loadTestsFromName(t))
 
-if __name__ == "__main__":
+
+def test_all():
+    return suite
+
+
+def manual_test_all():
     unittest.TextTestRunner().run(suite)
+
+
+if __name__ == "__main__":
+    manual_test_all()

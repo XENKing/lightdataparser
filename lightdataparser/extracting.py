@@ -27,7 +27,7 @@ def get_paths(files: list, recusive: bool = False) -> list:
             print("PermissionError: %s" % e)
         else:
             if path.is_dir():
-                path = [f for f in path.iterdir()] if not recusive else [i for i in path.rglob("*")]
+                path = [f for f in path.iterdir() if not f.is_dir()] if not recusive else [i for i in path.rglob("*")]
             paths.append(path)
 
     paths = sum(paths, [])
@@ -36,6 +36,9 @@ def get_paths(files: list, recusive: bool = False) -> list:
 
 def get_out_path(file: str, default_name: str = "output.tsv") -> Path:
     path = Path.cwd().joinpath(default_name)
+    if not file:
+        Path(path).touch()
+        return path
     try:
         path = Path(file).resolve(strict=True)
     except FileNotFoundError:

@@ -20,6 +20,7 @@ class TestExtractProcess(unittest.TestCase):
 
     @patch('lightdataparser.extracting.Path.touch', return_value=None)
     def test_get_out_path(self, mock_touch):
+        empty_path = extracting.get_out_path('')
         paths = [extracting.get_out_path(file) for file in self.bad_files]
         folder_path = extracting.get_out_path(self.test_files)
 

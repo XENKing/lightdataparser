@@ -21,3 +21,7 @@ class TestMainCases(unittest.TestCase):
                             main.main()
                     else:
                         main.main()
+            gui_args = {'recursive_option': False, 'union_option': False, 'advanced_option': False, 'output_file': '',
+                        'input_path': ''}
+
+            main.main(True, gui_args)

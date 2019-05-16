@@ -132,7 +132,8 @@ def dump(file, data):
     :param file: Объект с типом файла
     :param data: Строки с данными
     """
-    print("Unsupported file type: {}".format(file))
+    print("Can't save.\nUnsupported file type: {}".format(file))
+    return False
 
 
 @dump.register(CsvObject)
@@ -141,3 +142,4 @@ def _dump_csv(file, data):
         writer = csv.writer(f, delimiter=file.delimeter, quotechar=file.quotechar, quoting=csv.QUOTE_NONE)
         for row in data:
             writer.writerow(row)
+    return True
